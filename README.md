@@ -1,155 +1,253 @@
-# To-Do List App — MERN Stack (Assignment 8)
+<div align="center">
 
-A full-stack To-Do List application built with **MongoDB**, **Express.js**, **React**, and **Node.js**.
+# ✅ To-Do List App
+
+### A full-stack task management application built with the MERN Stack
+
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.x-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+
+[Live Demo](#) · [Report Bug](https://github.com/hack2ai/todo-app/issues) · [GitHub Repo](https://github.com/hack2ai/todo-app)
+
+</div>
 
 ---
 
-## Project Structure
+## 📸 Screenshots
+
+### Dashboard & Task List
+![Dashboard](./screenshots/dashboard.png)
+
+### Add New Task
+![Add Task](./screenshots/add-task.png)
+
+### Edit Task
+![Edit Task](./screenshots/edit-task.png)
+
+---
+
+## 📌 Overview
+
+A production-ready To-Do List application that demonstrates full-stack MERN development. The backend exposes a RESTful API with proper validation, error handling, and a layered architecture (Routes → Controllers → Services → Models). The React frontend consumes this API via Axios, managing state through a custom hook with real-time UI updates.
+
+---
+
+## ⚙️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Runtime | Node.js |
+| Framework | Express.js |
+| Database | MongoDB + Mongoose ODM |
+| Frontend | React 18 (Hooks) |
+| HTTP Client | Axios |
+| Validation | express-validator + client-side |
+| Deployment | Render (backend) + Netlify (frontend) |
+
+---
+
+## 🗂️ Project Structure
 
 ```
 todo-app/
 ├── backend/
-│   ├── config/db.js            # MongoDB connection
+│   ├── config/
+│   │   └── db.js                  # MongoDB connection
 │   ├── controllers/
-│   │   └── todoController.js   # Request/response handlers
+│   │   └── todoController.js      # HTTP request handlers
 │   ├── middleware/
-│   │   ├── errorHandler.js     # Global error handling
-│   │   └── validators.js       # express-validator rules
+│   │   ├── errorHandler.js        # Global error handling
+│   │   └── validators.js          # Input validation rules
 │   ├── models/
-│   │   └── Todo.js             # Mongoose schema
+│   │   └── Todo.js                # Mongoose schema & model
 │   ├── routes/
-│   │   └── todoRoutes.js       # API route definitions
+│   │   └── todoRoutes.js          # API route definitions
 │   ├── services/
-│   │   └── todoService.js      # Business logic layer
+│   │   └── todoService.js         # Business logic layer
 │   ├── .env.example
 │   ├── package.json
-│   └── server.js               # Express entry point
+│   └── server.js                  # Express entry point
 │
 └── frontend/
-    ├── public/index.html
     └── src/
         ├── components/
-        │   ├── FilterBar.jsx   # Search + filter controls
-        │   ├── StatsBar.jsx    # Summary stats dashboard
-        │   ├── TodoForm.jsx    # Create/edit form
-        │   └── TodoItem.jsx    # Single task card
+        │   ├── FilterBar.jsx       # Search & filter controls
+        │   ├── StatsBar.jsx        # Summary stats dashboard
+        │   ├── TodoForm.jsx        # Create / edit form
+        │   └── TodoItem.jsx        # Individual task card
         ├── hooks/
-        │   └── useTodos.js     # Custom hook for all state/API logic
+        │   └── useTodos.js         # Custom hook — all state & API logic
         ├── services/
-        │   └── todoService.js  # Axios API calls
+        │   └── todoService.js      # Axios API calls
         ├── App.jsx
-        ├── App.css
-        └── index.js
+        └── App.css
 ```
 
 ---
 
-## API Endpoints
+## 🚀 API Reference
 
-| Method | Endpoint               | Description                              |
-|--------|------------------------|------------------------------------------|
-| GET    | /api/todos             | Get all todos (search, filter, paginate) |
-| GET    | /api/todos/stats       | Get summary counts by status             |
-| GET    | /api/todos/:id         | Get single todo                          |
-| POST   | /api/todos             | Create new todo                          |
-| PUT    | /api/todos/:id         | Update a todo (all fields)               |
-| PATCH  | /api/todos/:id/status  | Update status only                       |
-| DELETE | /api/todos/:id         | Delete a todo                            |
+Base URL: `/api/todos`
 
-### Query params for GET /api/todos
-- `search` — search title + description (case-insensitive)
-- `status` — `pending` | `in-progress` | `completed`
-- `priority` — `low` | `medium` | `high`
-- `page` — page number (default: 1)
-- `limit` — items per page (default: 10)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | Get all todos (with search, filter, pagination) |
+| `GET` | `/stats` | Get task counts by status |
+| `GET` | `/:id` | Get a single todo |
+| `POST` | `/` | Create a new todo |
+| `PUT` | `/:id` | Update a todo (all fields) |
+| `PATCH` | `/:id/status` | Update status only |
+| `DELETE` | `/:id` | Delete a todo |
+
+### Query Parameters — `GET /api/todos`
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `search` | string | Search in title & description |
+| `status` | string | `pending` \| `in-progress` \| `completed` |
+| `priority` | string | `low` \| `medium` \| `high` |
+| `page` | number | Page number (default: 1) |
+| `limit` | number | Items per page (default: 10) |
+
+### Example Request
+
+```bash
+# Create a task
+curl -X POST http://localhost:5000/api/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Complete Assignment 8","priority":"high","status":"in-progress"}'
+
+# Get all high priority tasks
+curl http://localhost:5000/api/todos?priority=high&status=pending
+```
 
 ---
 
-## Local Setup
+## 🛠️ Local Setup
 
-### 1. Clone the repository
+### Prerequisites
+- Node.js v18+
+- MongoDB (local) or MongoDB Atlas account
+- Git
+
+### 1. Clone the Repository
 
 ```bash
-git clone <your-github-repo-url>
+git clone https://github.com/hack2ai/todo-app.git
 cd todo-app
 ```
 
-### 2. Backend setup
+### 2. Backend Setup
 
 ```bash
 cd backend
 npm install
 cp .env.example .env
-# Edit .env — add your MongoDB Atlas connection string
-npm run dev
 ```
 
-The API runs on **http://localhost:5000**
+Edit `.env`:
+```env
+PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/todoapp
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+```
 
-### 3. Frontend setup
+Start the server:
+```bash
+npm run dev
+```
+> API runs at **http://localhost:5000**
 
+### 3. Frontend Setup
+
+Open a new terminal:
 ```bash
 cd frontend
 npm install
 npm start
 ```
-
-The app runs on **http://localhost:3000**
-
-> The React dev server proxies `/api/*` requests to `localhost:5000` via the `"proxy"` field in `package.json`.
+> App opens at **http://localhost:3000**
 
 ---
 
-## Environment Variables (backend/.env)
-
-```
-PORT=5000
-MONGODB_URI=mongodb+srv://<user>:<pass>@cluster0.mongodb.net/todoapp?retryWrites=true&w=majority
-NODE_ENV=development
-CLIENT_URL=http://localhost:3000
-```
-
----
-
-## Deployment
+## 🌐 Deployment
 
 ### Backend → Render
 
-1. Push code to GitHub
-2. Create a new **Web Service** on [render.com](https://render.com)
-3. Set Root Directory to `backend`
+1. Go to [render.com](https://render.com) → **New Web Service**
+2. Connect your GitHub repo
+3. Set **Root Directory** to `backend`
 4. Build command: `npm install`
 5. Start command: `npm start`
-6. Add environment variables (`MONGODB_URI`, `NODE_ENV=production`, `CLIENT_URL=<netlify-url>`)
+6. Add environment variables:
+   ```
+   MONGODB_URI=<your-atlas-uri>
+   NODE_ENV=production
+   CLIENT_URL=<your-netlify-url>
+   ```
 
 ### Frontend → Netlify
 
-1. Create a new site on [netlify.com](https://netlify.com)
-2. Set Base directory to `frontend`
-3. Build command: `npm run build`
-4. Publish directory: `frontend/build`
-5. Add environment variable: `REACT_APP_API_URL=https://<your-render-url>/api/todos`
+1. Go to [netlify.com](https://netlify.com) → **New site from Git**
+2. Connect your GitHub repo
+3. Set **Base directory** to `frontend`
+4. Build command: `npm run build`
+5. Publish directory: `frontend/build`
+6. Add environment variable:
+   ```
+   REACT_APP_API_URL=https://<your-render-url>/api/todos
+   ```
 
 ---
 
-## Challenges & Solutions
+## ✨ Features
+
+- ✅ **Full CRUD** — Create, read, update, and delete tasks
+- 🔍 **Search** — Real-time search across title and description
+- 🎯 **Filter** — Filter by status and priority simultaneously
+- 📊 **Stats Dashboard** — Live count of tasks by status
+- ⚡ **Status Toggle** — One-click cycling through pending → in-progress → completed
+- ⚠️ **Overdue Detection** — Automatic highlighting of past-due tasks
+- 📱 **Responsive** — Works on mobile, tablet, and desktop
+- 🛡️ **Validation** — Both client-side and server-side input validation
+- 🔴 **Error Handling** — Graceful error messages on API failures
+- 📄 **Pagination** — Server-side pagination for large task lists
+
+---
+
+## 🧩 Architecture Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Controller/Service split | Separates HTTP concerns from business logic, making services independently testable |
+| Custom `useTodos` hook | Centralizes all state and API calls; components stay pure and simple |
+| Server-driven updates | Re-fetching after mutations ensures UI always reflects DB truth |
+| `express-validator` middleware | Validation rules are declarative and reusable across routes |
+| Mongoose text index | Enables efficient `$regex` search on title and description fields |
+
+---
+
+## ⚠️ Challenges & Solutions
 
 | Challenge | Solution |
 |-----------|----------|
-| CORS errors between frontend and backend | Configured `cors` middleware with explicit `origin` allowing the Netlify URL |
-| Mongoose CastError on invalid ObjectId | Centralized `errorHandler` middleware detects `CastError` and returns 400 |
-| Search + filter + pagination composability | Built `getAllTodos` service to strip empty params and compose a dynamic Mongoose query |
-| Optimistic UI vs. consistency | Chose server-driven updates (re-fetch after mutations) for correctness over optimistic patching |
-| Status cycle (3-way toggle) | `STATUS_CYCLE` map in `TodoItem` drives next-state without conditional chains |
+| CORS errors between frontend and backend | Configured `cors` middleware with explicit `origin` from env variable |
+| Mongoose `CastError` on invalid ObjectId | Global `errorHandler` detects `CastError` and returns `400` with a clean message |
+| Search + filter + pagination composability | `getAllTodos` service strips empty params and builds dynamic Mongoose query |
+| Status cycle (3-way toggle) | `STATUS_CYCLE` map in `TodoItem` drives next-state without chained conditionals |
+| Overdue detection | Compared `dueDate` with `new Date()` client-side, applied CSS class conditionally |
 
 ---
 
-## Tech Stack
+## 📄 License
 
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Database:** MongoDB (Mongoose ODM)
-- **Frontend:** React 18 (functional components, hooks)
-- **HTTP client:** Axios
-- **Validation:** express-validator (backend) + custom client-side validation
-- **Deployment:** Render (backend) + Netlify (frontend)
+This project was built as part of **Assignment 8** — MERN Stack Development.
+
+---
+
+<div align="center">
+Made with ☕ by <a href="https://github.com/hack2ai">hack2ai</a>
+</div>
